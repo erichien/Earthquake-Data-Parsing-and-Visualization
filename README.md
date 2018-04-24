@@ -1,2 +1,2 @@
-# Geographic-data-parsing-and-visualization
+# Geographic Data Parsing and Visualization
 Geographic data parsing and visualization
