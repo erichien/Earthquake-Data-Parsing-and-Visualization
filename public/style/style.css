@@ -1,0 +1,59 @@
+* {
+  font-family: -apple-system, 'Open Sans', sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+}
+
+section {
+  width: 100%;
+  padding: 100px 0;
+}
+
+.title {
+  text-align: center;
+}
+
+.gist {
+  width: 60%;
+  margin: auto;
+}
+
+.d3 {
+  height: 1000px;
+}
+
+.d3 h1,
+.d3 h2 {
+  position: absolute;
+  left: 10px;
+  font-size: 1.3em;
+  font-weight: 100;
+}
+
+/* Remove .incident fill CSS */
+
+.hover {
+  fill: yellow;
+}
+
+.python-plotly {
+  padding: 0;
+}
+
+.plotly-map {
+}
