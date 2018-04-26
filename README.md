@@ -70,7 +70,7 @@ I used Python to complete the tasks, and experimented with a few approaches to p
 3. Convert json to Pandas DataFrame
 4. Utilize third-party Python libraries (GeoPandas, Geojsonio) to parse the GeoJSON file
 
-Pandas DataFrame provides more legible structure, and is somewhat easier to manipulate compared to json (nested dictionary). Results show that DataFrame has better performance during parsing and data selection compared to naively looping through the json (dict), but lags behind when outputting with the iterrows() methods. Using Lambda, Map, and Filter functions has the best performance overall while still being scalable. GeoPandas is similar to Pandas, but has simpler ways to import json data and visualize results. Geojsonio is out-of-date.
+Pandas DataFrame provides more legible structure, and is somewhat easier to manipulate compared to json (nested dictionary). Results show that DataFrame has better performance during parsing and data selection compared to naively looping through the json (dict), but lags behind when outputting with the iterrows() methods. Using Lambda, Map, and Filter functions has the best performance overall while still being scalable. GeoPandas is similar to Pandas, but has simpler ways to import geojson data and visualize results. Geojsonio is out-of-date.
 
 ​    
 
