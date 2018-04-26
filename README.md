@@ -4,7 +4,7 @@
 
 For a comprehensive documentation and results, please visit: https://earthquake-data.herokuapp.com/ 
 
-  
+​    
 
 ## Problem Description
 
