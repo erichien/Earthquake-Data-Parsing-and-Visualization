@@ -2,23 +2,12 @@ import pandas as pd
 from time import time
 from config import Config
 from datetime import datetime
-
-
-def _test_json_properties(data):
-    assert ('features' in data), 'key features not in json data'
-    assert ('properties' in data['features']), 'key properties not in feature'
-    assert ('time' in data['features']['properties']), 'key time not in feature[\'properties\']'
-    assert ('place' in data['features']['properties']), 'key place not in feature[\'properties\']'
-    assert ('mag' in data['features']['properties']), 'key mag not in feature[\'properties\']'
-
-
-def _test_df_columns(df):
-    assert ('properties.time' in df), 'column properties.time not in dataframe'
-    assert ('properties.place' in df), 'column properties.place not in dataframe'
-    assert ('properties.mag' in df), 'column properties.mag not in dataframe'
+from time import localtime, strftime
 
 
 def _time_secs(timestamp):
+    # convert the given unix timestamp to secs
+
     current_time = int(time())
     current_time_digits = len(str(current_time))
     timestamp_digits = len(str(timestamp))
@@ -28,12 +17,20 @@ def _time_secs(timestamp):
         return int(timestamp)
 
 
+def _log_results(results, place):
+    print
+    for result in results:
+        print result
+    print '\n----------------------------------------------------------------\n'
+    print 'Current time is {}'.format(strftime('%Y-%m-%d %H:%M:%S%z', localtime()))
+    print 'There were {} earthquakes in {} in the past month\n'.format(len(results), place)
+
+
 def parse_naive(data, place):
     """
     Naively parse the GeoJSON by looping through the dictionary, and output earthquake data of the given location in the desired format.
     """
 
-    # _test_json_properties(data)
     location, location_code = place, Config.STATE_CODES[place]
 
     # find earthquake records of the given location using state name and abbreviation
@@ -55,8 +52,7 @@ def parse_naive(data, place):
     local = map(select_fields, local)
     local_sorted = sorted(local, key=lambda x: (x['magnitude'], x['time']))
     results = map(format_output, local_sorted)
-
-    return results
+    _log_results(results, place)
 
 
 def parse_pandas(data, place):
@@ -66,10 +62,8 @@ def parse_pandas(data, place):
 
     location, location_code = place, Config.STATE_CODES[place]
 
-    # _test_json_properties(data)
     # normalize features and store as DataFrame
     df = pd.io.json.json_normalize(data['features'])
-    _test_df_columns(df)
     # keep columns relevant to output
     df = df[['properties.time', 'properties.place', 'properties.mag']]
     # find earthquake records of the given location using state name and abbreviation
@@ -86,4 +80,4 @@ def parse_pandas(data, place):
                                                     format_mag(row['properties.mag']))
 
     results = map(format_output, df_local_sorted.iterrows())
-    return results
+    _log_results(results, place)

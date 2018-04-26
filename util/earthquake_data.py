@@ -5,7 +5,6 @@ This file parses input arguments and output results based on the chosen library
 
 from config import Config
 from load_data import load
-from logger import logger
 from argparse import ArgumentParser
 from parse import parse_naive, parse_pandas
 from plot import plot_geopandas, plot_plotly
@@ -14,27 +13,16 @@ from plot import plot_geopandas, plot_plotly
 def main(args):
 
     mode, lib, place = args.mode, args.lib, args.place
-    PRESETS = {
+    presets = {
                 ('log', 'naive'): parse_naive,
                 ('log', 'pandas'): parse_pandas,
                 ('plot', 'geopandas'): plot_geopandas,
                 ('plot', 'plotly'): plot_plotly
             }
 
-    if mode == 'log' and not (lib == 'naive' or lib == 'pandas'):
-        parser.error('--library can only be \'naive\' or \'pandas\' when --mode is \'log\'.')
-    if mode == 'plot' and not (lib == 'geopandas' or lib == 'plotly'):
-        parser.error('--library can only be \'geopandas\' or \'plotly\' when --mode is \'plot\'.')
-
     data = load(Config.URL, Config.FILEPATH)
-
-    if mode == 'log':
-        parse = PRESETS[('log', lib)]
-        results = parse(data, place)
-        logger(results, place)
-    else:
-        plot = PRESETS[('plot', lib)]
-        plot(data, place)
+    process_data = presets[(mode, lib)]
+    process_data(data, place)
 
 
 if __name__ == '__main__':
@@ -57,7 +45,13 @@ if __name__ == '__main__':
                         default='California',
                         choices=Config.VALID_PLACES,
                         required=True,
-                        help="the location of the earthquake data to output in capital case")
+                        help="the location of the earthquake data to output in Sentence case")
 
     args = parser.parse_args()
+
+    if args.mode == 'log' and not (args.lib == 'naive' or args.lib == 'pandas'):
+        parser.error('--library can only be \'naive\' or \'pandas\' when --mode is \'log\'.')
+    if args.mode == 'plot' and not (args.lib == 'geopandas' or args.lib == 'plotly'):
+        parser.error('--library can only be \'geopandas\' or \'plotly\' when --mode is \'plot\'.')
+
     main(args)
