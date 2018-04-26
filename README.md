@@ -4,7 +4,7 @@
 
 For a comprehensive documentation and results, please visit: https://earthquake-data.herokuapp.com/ 
 
-
+  
 
 ## Problem Description
 
@@ -36,11 +36,11 @@ Using this JSON feed:
 
    2017-07-13T22:09:53+00:00 | 41km SW of Ferndale, California | Magnitude: 2.76
 
-
+​    
 
 ## Process
 
-There are a few key tasks to solving this problem:
+### Key Tasks
 
 1. Request GeoJSON file:
    1. The file needs to be requested to produce an up-to-date result
@@ -51,15 +51,15 @@ There are a few key tasks to solving this problem:
    1. Convert unix timestamp to the format as defined in the requirement
    2. Sort the collected results by magnitude (ascending), then time (ascending)
 
+​    
 
-
-Ambiguity and Assumptions: 
+### Ambiguity and Assumptions 
 
 1. In the description, it asks us to process data from the past month, however the link leads to earthquake data from the past week. I sticked with data from the past month.
 2. Earthquakes sometimes are recorded in one state, but the sources are in another. I categorized them by the location the earthquakes were recorded.
 3. The type (cause) of the earthquake can also be further divided into earquake, chemical explosion, etc. I decided not to focus on these minor details.
 
-
+  
 
 ## Approaches
 
@@ -72,13 +72,13 @@ I used Python to complete the tasks, and experimented with a few approaches to p
 
 Pandas DataFrame provides more legible structure, and is somewhat easier to manipulate compared to json (nested dictionary). Results show that DataFrame has better performance during parsing and data selection compared to naively looping through the json (dict), but lags behind when outputting with the iterrows() methods. Using Lambda, Map, and Filter functions has the best performance overall while still being scalable. GeoPandas is similar to Pandas, but has simpler ways to import json data and visualize results. Geojsonio is out-of-date.
 
-
+  
 
 ## Additional Feature
 
 I took the liberty of adding a function to make this program more comprehensive. In addition to California, users are able to query earthquake data for any given state within the United States.
 
-
+  
 
 ## Visualization
 
@@ -86,7 +86,7 @@ Through my conversations with Chris and Ahmad, I learned that the team often hav
 
 Therefore, I included three methods for visualizing the earthquake data: GeoPandas (Python), Plotly (Python), and D3.js (JavaScript).
 
-
+  
 
 ## Installation    
 
@@ -96,7 +96,7 @@ Please install requirements using pip:
 pip install -r requirements.txt
 ```
 
-
+  
 
 ## Usage  
 
@@ -118,7 +118,7 @@ The `--place` is the desired location of the earthquake data to output. This arg
 In `log` mode, the user can choose to process the data with one of two libraries(approaches): `naive` and `pandas`. 
 In `plot` mode, the user can choose to plot the data with one of two libraries: `geopandas` and `plotly`
 
-
+  
 
 ## Example  
 
@@ -134,3 +134,4 @@ To plot the data of earthquakes in Oregon state in the past month on a map:
 python earthquake_data.py -m plot -l plotly -p Oregon
 ```
 
+  
