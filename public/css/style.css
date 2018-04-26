@@ -1,5 +1,5 @@
 * {
-  font-family: -apple-system, 'Open Sans', sans-serif;
+  font-family: 'Lato', -apple-system, 'Open Sans', sans-serif;
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -16,63 +16,88 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  font-size: 20px;
   line-height: 2;
-  color: #444;
+  color: #333;
 }
 
 section {
   width: 100%;
-  padding: 100px 0;
+  padding: 50px 0;
 }
 
 h1 {
   line-height: 1.5;
-  font-size: 200%;
+  font-size: 250%;
   text-align: center;
 }
 
 h2 {
   margin: 20px 0;
   font-size: 200%;
-  font-weight: 600;
+  font-weight: 700;
 }
 
-h3 {
-  font-weight: 300;
+p {
+  font-weight: 400;
+}
+
+code {
+  font-family: 'Courier';
+  font-size: 80%;
+}
+
+ol {
+  width: 95%;
+  margin: 20px auto;
+}
+
+.header {
+  padding: 150px 0 100px 0;
+  background-color: #efd;
 }
 
 .description {
-  width: 60%;
-  min-width: 700px;
+  width: 55%;
+  min-width: 640px;
   margin: auto;
 }
 
 .gist {
-  width: 50%;
-  margin: auto;
+  width: 55%;
+  min-width: 640px;
+  margin: 50px auto;
 }
 
 .d3 {
-  height: 1000px;
+  margin-top: 50px;
+  margin-bottom: 80px;
+  min-width: 1000px;
+  min-height: 507px;
+  flex-direction: row;
+  justify-content: space-between;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #aaa;
 }
 
-.d3 h1,
-.d3 h2 {
+.d3-info {
   position: absolute;
-  left: 10px;
-  font-size: 1.3em;
-  font-weight: 100;
+  left: 8%;
+  padding-top: 200px;
+  font-weight: 300;
 }
 
-/* Remove .incident fill CSS */
+.d3 svg {
+  position: absolute;
+  margin: auto;
+  right: 50px;
+}
 
 .hover {
   fill: yellow;
 }
 
-.python-plotly {
-  padding: 0;
-}
-
-.plotly-map {
+.thanks {
+  padding-bottom: 250px;
 }

@@ -3,94 +3,185 @@
 
   <head>
     <title>Making Sense of GeoJSON Data with Python and JavaScript</title>
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="./css/style.css">
     <script src="https://d3js.org/d3.v5.min.js" charset="utf-8" async></script>
     <script src="./js/script.js" defer></script>
-    <script src="../data/north-america.json" defer></script>
-    <script src="../data/cali-data.json" defer></script>
+    <script src="https://virtuositeit.github.io/earthquake_data/cali-data.json" defer></script>
+    <script src="https://virtuositeit.github.io/earthquake_data/north-america.json" defer></script>
   </head>
 
   <body>
-    <section>
+    <section class='header'>
       <h1 class='title'>Making Sense of GeoJSON Data</h1>
       <h1 class='title'>with Python and JavaScript</h1>
     </section>
 
-    <section class='problem'>
+    <section>
       <div class='description'>
         <h2>Problem Description</h2>
         <p>
-          USGS (US Geological Survey) publishes earthquake data.<br />
-          Here's a feed spanning all domestic earthquakes from the past month:<br /> https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson<br />
-
-          Using this JSON feed:<br />
-          1) identify every earthquake in California from past month,<br />
-          2) list them by increasing magnitude<br />
-          3) and finally output in a format resembling the following e.g.:<br />
-          2017-07-13T22:32:48+00:00 | 15km SE of Mammoth Lakes, California | Magnitude: 0.92<br />
-          2017-07-13T22:49:58+00:00 | 8km ENE of Mammoth Lakes, California | Magnitude: 0.92<br />
-          2017-07-13T22:37:52+00:00 | 12km E of Mammoth Lakes, California | Magnitude: 0.95<br />
-          2017-07-13T20:43:37+00:00 | 3km NW of Greenville, California | Magnitude: 1<br />
-          2017-07-13T22:31:04+00:00 | 11km E of Mammoth Lakes, California | Magnitude: 1.31<br />
-          2017-07-13T22:45:28+00:00 | 37km SE of Bridgeport, California | Magnitude: 1.7<br />
-          2017-07-13T22:54:30+00:00 | 3km SE of Atascadero, California | Magnitude: 2.04<br />
-          2017-07-13T22:09:53+00:00 | 41km SW of Ferndale, California | Magnitude: 2.76<br />
+          USGS (US Geological Survey) publishes earthquake data. <a href='https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson'>Here</a> is a feed spanning all domestic earthquakes from the past month.<br><br />
+          Using this JSON feed:<br>
+          1) identify every earthquake in California from past month,<br>
+          2) list them by increasing magnitude<br>
+          3) and finally output in a format resembling the following e.g.:<br><br>
+          2017-07-13T22:32:48+00:00 | 15km SE of Mammoth Lakes, California | Magnitude: 0.92<br>
+          2017-07-13T22:49:58+00:00 | 8km ENE of Mammoth Lakes, California | Magnitude: 0.92<br>
+          2017-07-13T22:37:52+00:00 | 12km E of Mammoth Lakes, California | Magnitude: 0.95<br>
+          2017-07-13T20:43:37+00:00 | 3km NW of Greenville, California | Magnitude: 1<br>
+          2017-07-13T22:31:04+00:00 | 11km E of Mammoth Lakes, California | Magnitude: 1.31<br>
+          2017-07-13T22:45:28+00:00 | 37km SE of Bridgeport, California | Magnitude: 1.7<br>
+          2017-07-13T22:54:30+00:00 | 3km SE of Atascadero, California | Magnitude: 2.04<br>
+          2017-07-13T22:09:53+00:00 | 41km SW of Ferndale, California | Magnitude: 2.76<br>
         </p>
       </div>
     </section>
 
-    <section class='python'>
+    <section>
       <div class='description'>
-        <h2>task</h2>
-        <h3></h3>
-      </div>
-      <div></div>
-      <script src="https://gist.github.com/virtuositeit/455e58aba6aa31ad96c2406813da0069.js"></script>
-      <div class='description'>
-        results:
+        <h2>Process</h2>
+        <h3>Key Tasks</h3>
+        <ol>
+          <li>Request GeoJSON file:<br>
+             i. The file needs to be requested to produce an up-to-date result<br>
+          </li>
+          <li>Parse GeoJSON to get the relevant information from file for output:<br>
+             i. Select earthquakes with location info containing California or CA<br>
+             ii. Extract time, location, and magnitude info from input data<br>
+          </li>
+          <li>Format output:<br>
+             i. Convert unix timestamp to the format as defined in the requirement<br>
+             ii. Sort the collected results by magnitude (ascending), then time (ascending)<br>
+          </li>
+        </ol>
+        <br>
+        <h3>Ambiguity and Assumptions</h3>
+        <ol>
+          <li>
+            In the description, it asks us to process data from the past month, however the link leads to earthquake data from the past week. I sticked with data from the past month.
+          </li>
+          <li>
+          Earthquakes sometimes are recorded in one state, but the sources are in another. I categorized them by the location the earthquakes were recorded.
+          </li>
+          <li>
+            The type (cause) of the earthquake can also be further divided into earquake, chemical explosion, etc. I decided not to focus on these minor details.
+          </li>
+        <ol>
       </div>
     </section>
 
-    <section class='python-pandas'>
+    <section>
       <div class='description'>
-        <h2>task</h2>
-        <h3></h3>
+        <h2>Approaches</h2>
+        <p>
+          I used Python to complete the tasks, and experimented with a few different approaches to process the data:<br>
+
+          <ol>
+            <li>Naively loop through the entire json file, checking properties with if-else statements</li>
+            <li>Use Lambda, Map, and Filter functions to obtain the desired values from input data</li>
+            <li>Convert json to Pandas DataFrame</li>
+            <li>Utilize third-party Python libraries (GeoPandas, Geojsonio) to parse the GeoJSON file</li>
+          </ol>
+
+          The code using Lambda, Map, and Filter functions has the best performance overall while still being scalable. Third-party library GeoPandas is similar to Pandas, but has simpler ways to import geojson data and visualize results. Geojsonio is out-of-date.<br><br>
+
+          Here's a look at the code using Lambda, Map, and Filter functions. (The function is renamed parse_naive since it doesn't untilize external libraries)
+        </p>
+      </div>
+      <script src="https://gist.github.com/virtuositeit/455e58aba6aa31ad96c2406813da0069.js"></script>
+      <div class='description'>
+        <p>
+          The generated results for earthquakes in California in the past month as of April 26 morning:<br>
+        </p>
+        <code>
+          <br>
+          2018-03-28T06:09:34+00:00 | 6km WNW of Cobb, CA | Magnitude: -0.41<br>
+          2018-03-29T12:43:39+00:00 | 3km E of Truckee, California | Magnitude: -0.3<br>
+          2018-03-31T00:24:48+00:00 | 4km NNE of Truckee, California | Magnitude: -0.3<br>
+          2018-04-18T05:49:52+00:00 | 2km WSW of Tahoe Vista, California | Magnitude: -0.3<br>
+          2018-04-15T08:27:59+00:00 | 8km WSW of Anza, CA | Magnitude: -0.28<br>
+          ...<br>
+          2018-04-16T16:36:48+00:00 | 15km NW of Grapevine, CA | Magnitude: 3.78
+          2018-04-16T16:39:26+00:00 | 9km NNE of Alum Rock, CA | Magnitude: 3.82<br>
+          2018-04-23T00:46:08+00:00 | 13km NNE of Thousand Palms, CA | Magnitude: 3.87<br>
+          2018-04-26T01:36:00+00:00 | 16km NNE of Borrego Springs, CA | Magnitude: 3.94<br>
+          2018-04-05T19:29:16+00:00 | 29km SW of Santa Cruz Is. (E end), CA | Magnitude: 5.31<br>
+          ----------------------------------------------------------------<br>
+          Current time is 2018-04-26 11:28:17-0400<br>
+          There were 3270 earthquakes in California in the past month<br>
+        </code>
+        <p>
+          <br>
+          Pandas DataFrame provides more legible structure, and is somewhat easier to manipulate compared to json (nested dictionary). Results show that DataFrame has better performance during parsing and data selection compared to labmda, map and filter functions, but lags behind when outputting with the iterrows() methods. <br>
+        </p>
       </div>
       <script src="https://gist.github.com/virtuositeit/8d4117c7778c04385a11116a9d900f76.js"></script>
     </section>
 
-    <section class='python-geopandas'>
+    <section>
       <div class='description'>
-        <h2>GeoPandas</h2>
-        <h3></h3>
+        <h2>Additional Feature</h2>
+        <p>
+          I took the liberty of adding a function to make this program more comprehensive. In addition to California, users are able to query earthquake data for any given state within the United States. Here is an example output for Oregon state:<br>
+        </p>
+        <code>
+          <br>
+          2018-04-09T20:47:14+00:00 | 33km ESE of Three Rivers, Oregon | Magnitude: 0.37<br>
+          2018-04-17T08:03:21+00:00 | 21km E of Mount Hood Village, Oregon | Magnitude: 0.45<br>
+          2018-04-09T13:48:40+00:00 | 19km E of La Pine, Oregon | Magnitude: 0.51<br>
+          2018-04-24T16:44:40+00:00 | 6km NNE of Roseburg North, Oregon | Magnitude: 0.69<br>
+          2018-04-02T18:14:59+00:00 | 18km SE of Glide, Oregon | Magnitude: 0.9<br>
+          ...<br>
+          2018-04-15T03:45:41+00:00 | 6km SW of Silverton, Oregon | Magnitude: 3.08<br>
+          2018-04-20T18:01:56+00:00 | 192km WNW of Port Orford, Oregon | Magnitude: 3.1<br>
+          2018-04-05T07:19:27+00:00 | Off the coast of Oregon | Magnitude: 3.7<br>
+          2018-04-26T08:44:32+00:00 | 118km WNW of Barview, Oregon | Magnitude: 3.8<br>
+          2018-04-21T09:50:08+00:00 | Off the coast of Oregon | Magnitude: 4<br>
+          ----------------------------------------------------------------<br>
+          Current time is 2018-04-26 11:57:57-0400<br>
+          There were 29 earthquakes in Oregon in the past month<br>
+        </code>
+      </div>
+    </section>
+
+    <section>
+      <div class='description'>
+        <h2>Visualization</h2>
+        <p>
+          Through my conversations with Chris and Ahmad, I learned that the team often have to show data with charts in the web apps. It is important to keep our users' needs in mind, and I believe proper visualization turns data into insights, and can help our users understand the data better and faster. For non-technical users, it will also be easier for them to navigate a GUI on a web page instead of the CLI.<br><br>
+          Therefore, I included three methods for visualizing the earthquake data: GeoPandas (Python), Plotly (Python), and D3.js (JavaScript).<br><br>
+        </p>
+        <h3>GeoPandas</h3>
+        <p>
+        As previously mentioned, GeoPandas is similar to Pandas, but has simpler ways to import geojson data and visualize results.
+        </p>
       </div>
       <script src="https://gist.github.com/virtuositeit/6d679014effa84113ff5378d1c3480a6.js"></script>
-      <div>
-        results:
-      </div>
-    </section>
 
-    <section class='d3'>
       <div class='description'>
-        <h2 id='js-map'>Earthquakes in California</h1>
-        <h3></h3>
+        <h3>D3.js</h3>
       </div>
-      <div id='d3-map'></div>
-    </section>
+      <div class='d3'>
+        <div class='d3-info'>
+          <h3>Earthquakes in California</h3>
+          <p class='d3-data'>(hover over data points to view earthquake info)</p>
+        </div>
+      </div>
 
-    <section class='python-plotly'>
       <div class='description'>
-        <h2 id='js-map'>Earthquakes in California</h1>
-        <h3></h3>
+        <h3>Plotly</h3>
+        <p>
+          Plotly is a Python library utilizing Mapbox's cartography service. After preprocessing data as a Pandas DaraFrame, it is easy to customize with just a few lines of code. <br><br>
+        </p>
       </div>
-      <script src="https://gist.github.com/virtuositeit/5974656700cf7ccf91e4ccf320942ce1.js"></script>
-      <iframe class='ploty-map' width="100%" height="600" frameborder="0" scrolling="yes" src="//plot.ly/~erichien/3.embed?autosize=True&width=100%&modebar=false&logo=false&link=false">
+      <iframe class='ploty-map' width="100%" height="750" frameborder="0" scrolling="yes" src="//plot.ly/~erichien/3.embed?autosize=True&width=100%&modebar=false&logo=false&link=false">
       </iframe>
-      <div>
-      </div>
+      <script src="https://gist.github.com/virtuositeit/5974656700cf7ccf91e4ccf320942ce1.js"></script>
+
     </section>
 
-    <section class='doc'>
+    <section>
       <div class='description'>
         <h2>Documentation</h1>
         <h3></h3>
@@ -101,7 +192,7 @@
     <section class='thanks'>
       <div class='description'>
         <h2>Thank You!</h2>
-        <h3>Thanks for taking the time to review my work. I would appreciate any feedback!</h3>
+        <p>Thanks for taking the time to review my work. I would really appreciate any feedback!</p>
       </div>
     </section>
 
