@@ -93,6 +93,7 @@ Therefore, I included three methods for visualizing the earthquake data: GeoPand
 Please install requirements using pip:
 
 ```pip install -r requirements.txt
+cd ./util/
 pip install -r requirements.txt
 ```
 
