@@ -16,6 +16,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  line-height: 2;
+  color: #444;
 }
 
 section {
@@ -23,12 +25,30 @@ section {
   padding: 100px 0;
 }
 
-.title {
+h1 {
+  line-height: 1.5;
+  font-size: 200%;
   text-align: center;
 }
 
-.gist {
+h2 {
+  margin: 20px 0;
+  font-size: 200%;
+  font-weight: 600;
+}
+
+h3 {
+  font-weight: 300;
+}
+
+.description {
   width: 60%;
+  min-width: 700px;
+  margin: auto;
+}
+
+.gist {
+  width: 50%;
   margin: auto;
 }
 

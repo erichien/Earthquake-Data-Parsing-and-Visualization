@@ -1,8 +1,7 @@
 import pandas as pd
-from time import time
+from time import time, localtime, strftime
 from config import Config
 from datetime import datetime
-from time import localtime, strftime
 
 
 def _time_secs(timestamp):
