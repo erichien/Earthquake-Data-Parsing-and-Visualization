@@ -1,8 +1,8 @@
 # Earthquake Data Parsing and Visualization    
 
+​    
 
-
-For a comprehensive documentation and results, please visit: https://earthquake-data.herokuapp.com/ 
+For comprehensive documentation and visualization results, please visit: https://earthquake-data.herokuapp.com/ 
 
 ​    
 
